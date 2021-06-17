@@ -7,6 +7,7 @@ public final class Job {
 
     private String ID;
     private String Name;
+    private String Namespace;
     private String Region;
     private String Type;
     private Integer Priority;
@@ -17,6 +18,7 @@ public final class Job {
     public Job(
             String ID,
             String name,
+            String namespace,
             String region,
             String type,
             Integer priority,
@@ -25,6 +27,7 @@ public final class Job {
             TaskGroup[] taskGroups) {
         this.ID = ID;
         Name = name;
+        Namespace = namespace;
         Region = region;
         Type = type;
         Priority = priority;
@@ -47,6 +50,14 @@ public final class Job {
 
     public void setName(String name) {
         Name = name;
+    }
+
+    public String getNamespace() {
+        return Namespace;
+    }
+
+    public void setNamespace(String namespace) {
+        Namespace = namespace;
     }
 
     public String getRegion() {

@@ -281,6 +281,7 @@ public final class NomadApi {
         Job job = new Job(
                 name,
                 name,
+                template.getNamespace(),
                 template.getRegion(),
                 "batch",
                 template.getPriority(),

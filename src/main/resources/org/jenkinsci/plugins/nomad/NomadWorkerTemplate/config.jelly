@@ -80,6 +80,15 @@
             <f:entry title="Image">
                 <f:textbox name="image" field="image" default="" />
             </f:entry>
+            <f:optionalBlock name="passthrough" title="Use passthrough arguments mode" inline="true" checked="${!instance.passthroughMode.isEmpty()}">
+                <f:entry name="passthroughMode" title="Choose mode" field="passthroughMode">
+                    <select name="passthroughMode">
+                        <option value="">disabled</option>
+                        <option value="linux" selected="${instance.passthroughMode.equals('linux') ? 'true' : null}">Linux</option>
+                        <option value="windows" selected="${instance.passthroughMode.equals('windows') ? 'true' : null}">Windows</option>
+                    </select>
+                </f:entry>
+            </f:optionalBlock>
             <f:entry title="Username">
                 <f:textbox name="username" field="username" />
             </f:entry>

@@ -155,45 +155,94 @@ public final class NomadApi {
             driverConfig.put("command", "java");
             driverConfig.put("args", args);
         } else if (template.isDockerDriver()) {
-            args.add("-headless");
+            if (!template.getPassthroughMode().isEmpty()) {
+                if (template.getPassthroughMode().equals("linux")) {
+                    if (!cloud.getJenkinsUrl().isEmpty()) {
+                        args.add("-url");
+                        args.add(cloud.getJenkinsUrl());
+                    }
 
-            if (!cloud.getJenkinsUrl().isEmpty()) {
-                args.add("-url");
-                args.add(cloud.getJenkinsUrl());
-            }
+                    if (!cloud.getJenkinsTunnel().isEmpty()) {
+                        args.add("-tunnel");
+                        args.add(cloud.getJenkinsTunnel());
+                    }
 
-            if (!cloud.getJenkinsTunnel().isEmpty()) {
-                args.add("-tunnel");
-                args.add(cloud.getJenkinsTunnel());
-            }
+                    if (!template.getRemoteFs().isEmpty()) {
+                        args.add("-workDir");
+                        args.add(Util.ensureEndsWith(template.getRemoteFs(), "/"));
+                    }
 
-            if (!template.getRemoteFs().isEmpty()) {
-                args.add("-workDir");
-                args.add(Util.ensureEndsWith(template.getRemoteFs(), "/"));
-            }
+                    // java -cp /local/slave.jar [options...] <secret key> <agent name>
+                    if (!secret.isEmpty()) {
+                        args.add(secret);
+                    }
+                    args.add(name);
+                } else if (template.getPassthroughMode().equals("windows")) {
+                    if (!cloud.getJenkinsUrl().isEmpty()) {
+                        args.add("-Url");
+                        args.add(cloud.getJenkinsUrl());
+                    }
 
-            // java -cp /local/slave.jar [options...] <secret key> <agent name>
-            if (!secret.isEmpty()) {
-                args.add(secret);
-            }
-            args.add(name);
+                    if (!cloud.getJenkinsTunnel().isEmpty()) {
+                        args.add("-Tunnel");
+                        args.add(cloud.getJenkinsTunnel());
+                    }
 
-            String prefixCmd = template.getPrefixCmd();
-            // If an addtional command is defined - prepend it to jenkins worker invocation
-            if (!prefixCmd.isEmpty()) {
-                driverConfig.put("command", "/bin/bash");
-                String argString =
-                        prefixCmd + "; java -cp /local/slave.jar hudson.remoting.jnlp.Main -headless ";
-                argString += StringUtils.join(args, " ");
-                args.clear();
-                args.add("-c");
-                args.add(argString);
+                    if (!template.getRemoteFs().isEmpty()) {
+                        args.add("-WorkDir");
+                        args.add(Util.ensureEndsWith(template.getRemoteFs(), "/"));
+                    }
+
+                    if (!secret.isEmpty()) {
+                        args.add("-Secret");
+                        args.add(secret);
+                    }
+                    args.add("-Name");
+                    args.add(name);
+                }
             } else {
-                driverConfig.put("command", "java");
-                args.add(0, "-cp");
-                args.add(1, "/local/slave.jar");
-                args.add(2, "hudson.remoting.jnlp.Main");
+                args.add("-headless");
+
+                if (!cloud.getJenkinsUrl().isEmpty()) {
+                    args.add("-url");
+                    args.add(cloud.getJenkinsUrl());
+                }
+
+                if (!cloud.getJenkinsTunnel().isEmpty()) {
+                    args.add("-tunnel");
+                    args.add(cloud.getJenkinsTunnel());
+                }
+
+                if (!template.getRemoteFs().isEmpty()) {
+                    args.add("-workDir");
+                    args.add(Util.ensureEndsWith(template.getRemoteFs(), "/"));
+                }
+
+                // java -cp /local/slave.jar [options...] <secret key> <agent name>
+                if (!secret.isEmpty()) {
+                    args.add(secret);
+                }
+                args.add(name);
+
+                String prefixCmd = template.getPrefixCmd();
+                // If an addtional command is defined - prepend it to jenkins worker invocation
+                if (!prefixCmd.isEmpty()) {
+                    driverConfig.put("command", "/bin/bash");
+                    String argString =
+                      prefixCmd + "; java -cp /local/slave.jar hudson.remoting.jnlp.Main -headless ";
+                    argString += StringUtils.join(args, " ");
+                    args.clear();
+                    args.add("-c");
+                    args.add(argString);
+                } else {
+                    driverConfig.put("command", "java");
+                    args.add(0, "-cp");
+                    args.add(1, "/local/slave.jar");
+                    args.add(2, "hudson.remoting.jnlp.Main");
+                }
             }
+            driverConfig.put("args", args);
+
             driverConfig.put("image", template.getImage());
 
             String hostVolumes = template.getHostVolumes();
@@ -201,7 +250,6 @@ public final class NomadApi {
                 driverConfig.put("volumes", StringUtils.split(hostVolumes, ","));
             }
 
-            driverConfig.put("args", args);
             driverConfig.put("force_pull", template.getForcePull());
             driverConfig.put("privileged", template.getPrivileged());
             driverConfig.put("network_mode", template.getNetwork());

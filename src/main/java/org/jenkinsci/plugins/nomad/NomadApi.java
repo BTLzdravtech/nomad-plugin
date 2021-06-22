@@ -244,6 +244,7 @@ public final class NomadApi {
             driverConfig.put("args", args);
 
             driverConfig.put("image", template.getImage());
+            driverConfig.put("image_pull_timeout", template.getImagePullTimeout());
 
             String hostVolumes = template.getHostVolumes();
             if (hostVolumes != null && !hostVolumes.isEmpty()) {

@@ -80,6 +80,9 @@
             <f:entry title="Image">
                 <f:textbox name="image" field="image" default="" />
             </f:entry>
+            <f:entry title="Image Pull timeout" field="imagePullTimeout">
+                <f:textbox name="imagePullTimeout" field="imagePullTimeout" default="5m" />
+            </f:entry>
             <f:optionalBlock name="passthrough" title="Use passthrough arguments mode" inline="true" checked="${!instance.passthroughMode.isEmpty()}">
                 <f:entry name="passthroughMode" title="Choose mode" field="passthroughMode">
                     <select name="passthroughMode">

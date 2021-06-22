@@ -24,7 +24,7 @@ public class NomadApiTest {
     private final NomadWorkerTemplate workerTemplate = new NomadWorkerTemplate(
             "test", "300", "256", "100",
             null, constraintTest, "remoteFs", false, "3", true, "1", Node.Mode.NORMAL,
-            "ams", "0", "image", "", "dc01", "default", "", "", false, "bridge",
+            "ams", "0", "image", "5m", "", "dc01", "default", "", "", false, "bridge",
             "", true, "/mnt:/mnt", "jenkins", new ArrayList<NomadPortTemplate>() {
     },
             "my_host:192.168.1.1,", "8.8.8.8,1.1.1.1", "apparmor=unconfined, seccomp=unconfined", "SYS_ADMIN, SYSLOG", "SYS_ADMIN, SYSLOG", "policy1,policy2", devicePluginsTest
@@ -63,7 +63,7 @@ public class NomadApiTest {
     private final NomadWorkerTemplate nullTemplate = new NomadWorkerTemplate(
             "test", "300", "256", "100",
             null, constraintTest, "remoteFs", false, "3", true, "1", Node.Mode.NORMAL,
-            "ams", "0", "image", "", "dc01", "default", "", "", false, "bridge",
+            "ams", "0", "image", "5m", "", "dc01", "default", "", "", false, "bridge",
             "", true, "/mnt:/mnt", "jenkins", new ArrayList<NomadPortTemplate>() {
     },
             "my_host:192.168.1.1,", "8.8.8.8,1.1.1.1", "apparmor=unconfined, seccomp=unconfined", "SYS_ADMIN, SYSLOG", "SYS_ADMIN, SYSLOG", null, devicePluginsTest

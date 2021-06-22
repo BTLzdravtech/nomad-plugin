@@ -36,6 +36,7 @@ public class NomadWorkerTemplate implements Describable<NomadWorkerTemplate> {
     private final String remoteFs;
     private final Boolean useRawExec;
     private final String image;
+    private final String imagePullTimeout;
     private final String passthroughMode;
     private final Boolean privileged;
     private final String network;
@@ -76,6 +77,7 @@ public class NomadWorkerTemplate implements Describable<NomadWorkerTemplate> {
             String region,
             String priority,
             String image,
+            String imagePullTimeout,
             String passthroughMode,
             String datacenters,
             String namespace,
@@ -120,6 +122,7 @@ public class NomadWorkerTemplate implements Describable<NomadWorkerTemplate> {
         this.labelSet = Label.parse(labels);
         this.region = region;
         this.image = image;
+        this.imagePullTimeout = imagePullTimeout;
         this.passthroughMode = passthroughMode;
         this.datacenters = datacenters;
         this.namespace = namespace;
@@ -242,6 +245,8 @@ public class NomadWorkerTemplate implements Describable<NomadWorkerTemplate> {
     public String getImage() {
         return image;
     }
+
+    public String getImagePullTimeout() { return imagePullTimeout; }
 
     public String getPassthroughMode() {
         return passthroughMode;
